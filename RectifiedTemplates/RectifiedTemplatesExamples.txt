@@ -1,0 +1,30 @@
+Original Template: ciod: Missing or invalid fields on line <*> of node map file /<*>
+Rectified Template: ciod: Missing or invalid fields on line <*> of node map file <*>
+
+Log Event: Found block rdd_42_20 locally
+Original Template: Found block rdd_<*> locally
+Rectified Template: Found block <*> locally
+
+Log Event: ciod: Missing or invalid fields on line 1 of node map file /home/auselton/bgl/mapfiles/bgl.128mps.f64.map
+Original Template: ciod: Missing or invalid fields on line <*> of node map file /<*>
+Rectified Template: ciod: Missing or invalid fields on line <*> of node map file <*>
+
+Log Event: Lustre mount FAILED : bglio617 : block_id : location
+Original Template: Lustre mount FAILED : bglio<*> : block_id : location
+Rectified Template: Lustre mount FAILED : <*> : block_id : location
+
+Log Event: ClusterFileSystem: ServerFileSystem domain root28_domain is no longer served by node node-96
+Original Template: ClusterFileSystem: ServerFileSystem domain <*> is no longer served by node node-<*>
+Rectified Template: ClusterFileSystem: ServerFileSystem domain <*> is no longer served by node <*>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,105 @@
+--------------------------------------------Mistral-7B-Instruct (Fine-tuning and Zero-shot Prompt)-------------------------------------------- 
+<|im_start|>system
+You are a log parsing assistant. Your task is to identify variable elements within the logs, generalize these elements, and construct a template that represents the structure of these log messages.
+<|im_end|>
+
+<|im_start|>user
+Extract the template for the following log message. Replace any variable element with the placeholder '<*>'. Do not provide any explanation, only return the template.
+```{log_event}```
+<|im_end|>
+
+<|im_start|>assistant
+```{ground_truth}```
+<|im_end|>
+
+--------------------------------------------Mistral-7B-Instruct (Few-shot Prompt)--------------------------------------------
+<|im_start|>system
+You are a log parsing assistant. Your task is to identify variable elements within the logs, generalize these elements, and construct a template that represents the structure of these log messages.
+<|im_end|>
+
+<|im_start|>user
+For your reference, here are a few log message examples and their corresponding templates.
+
+Example 1
+Log message: ```Error = , LOGIN chdir(/home/spelce1/UMT2K/umt2k/ckpt_umt2k_src/TEST/NEW_TEST) failed: No such file at /10.10.34.20:56374 point [/TEST/NEW_TEST], connect to proxy proxy.cse.cuhk.edu.hk:5070 to renew session (0x14f05578bd8001b)```
+Extracted template: ```Error = , LOGIN chdir(<*>) failed: No such file at <*>:<*> point [<*>], connect to proxy <*>:<*> to renew session (<*>)```
+
+Example 2
+Log message: ```ciod: In packet from nodes 91.0 and node-234 (R62-M1-Nf-C:J03-U11), message code 2 is not 3 or 4294967295 (softheader=003b005b 00030000 00000001 00000000)```
+Extracted template: ```ciod: In packet from nodes <*> and <*> (<*>:<*>), message code <*> is not <*> or <*> (softheader=<*> <*> <*> <*>)```
+
+Now, extract the template for the following log message. Replace any variable element with the placeholder '<*>'. Do not provide any explanation, only return the template.
+```{log_event}```
+<|im_end|>
+
+<|im_start|>assistant
+
+--------------------------------------------GPT4-Turbo (Zero-shot Prompt)--------------------------------------------
+You are a log parsing assistant. Your task is to identify variable elements within the logs, generalize these elements, and construct a template that represents the structure of these log messages.
+
+Extract the template for the following log message. Replace any variable element with the placeholder '<*>'. Do not provide any explanation, only return the template.
+```{log_event}```
+
+--------------------------------------------GPT4-Turbo (Few-shot Prompt)--------------------------------------------
+You are a log parsing assistant. Your task is to identify variable elements within the logs, generalize these elements, and construct a template that represents the structure of these log messages.
+
+For your reference, here are a few log message examples and their corresponding templates.
+
+Example 1
+Log message: ```Error = , LOGIN chdir(/home/spelce1/UMT2K/umt2k/ckpt_umt2k_src/TEST/NEW_TEST) failed: No such file at /10.10.34.20:56374 point [/TEST/NEW_TEST], connect to proxy proxy.cse.cuhk.edu.hk:5070 to renew session (0x14f05578bd8001b)```
+Extracted template: ```Error = , LOGIN chdir(<*>) failed: No such file at <*>:<*> point [<*>], connect to proxy <*>:<*> to renew session (<*>)```
+
+Example 2
+Log message: ```ciod: In packet from nodes 91.0 and node-234 (R62-M1-Nf-C:J03-U11), message code 2 is not 3 or 4294967295 (softheader=003b005b 00030000 00000001 00000000)```
+Extracted template: ```ciod: In packet from nodes <*> and <*> (<*>:<*>), message code <*> is not <*> or <*> (softheader=<*> <*> <*> <*>)```
+
+Now, extract the template for the following log message. Replace any variable element with the placeholder '<*>'. Do not provide any explanation, only return the template.
+```{log_event}```
+
+--------------------------------------------GPT4-Turbo as evaluator--------------------------------------------
+Task Description:
+Log parsing is the process of converting unstructured log messages into structured event templates by extracting the constant and variable parts of raw logs.
+You are a log parsing evaluator that assesses the quality of an extracted log template from a log message, given a ground truth template.
+
+Evaluation Criteria:
+Your evaluation must cover the accuracy and robustness of the extracted template.
+- Accuracy: This gauges the fidelity of the extracted templates in capturing the constant and variable parts of log messages, as defined by the ground truth.
+Accuracy is measured by the degree to which the extracted template aligns with the ground truth.
+- Robustness: This gauges the adaptability of the extracted templates across varied log types, including those with noise, inconsistencies, or diverse structures.
+Robustness is measured by the degree to which the extracted template is capable of preserving its quality and representation across diverse logs.
+
+Scoring:
+You will explain your reasoning and give a score between 0 and 5 for each evaluation criterion.
+A score of 0 means the extracted template is completely wrong or unusable, while a score of 5 means the extracted template is perfect or optimal.
+Assign a score of 5 for both Accuracy and Robustness if the extracted template matches the ground truth template exactly.
+
+Examples:
+For your reference, here are a few evaluation examples.
+
+- Example 1
+Log message: ```Client attempting to renew session (0x14f05578bd8001b) at (/10.10.34.20:56374)```
+Extracted template: ```Client attempting to renew session <*> at <*>```
+Ground truth template: ```Client attempting to renew session (<*>) at (<*>:<*>)```
+
+Evaluation:
+- Accuracy: The extracted template simplifies the variable parts into two placeholders <*>, which corresponds to the session ID and the IP:port pair in the log message. 
+  However, it does not accurately reflect the structure of the variable parts as indicated in the ground truth template. The ground truth specifies three separate placeholders
+  within parentheses and a distinct separation for the IP address and port, suggesting a more granular level of detail. Accuracy score: 3.
+- Robustness: The extracted template's simplified approach to variable parts (<*> at <*>) could be seen as more adaptable to a wider range of log messages, as it does not strictly enforce the format of the variable parts. 
+  This could potentially make the template more robust when dealing with logs that have minor deviations from the expected format, such as missing parentheses or variations in how the session ID and the IP:port pair are presented. Robustness score: 5.
+ 
+- Example 2
+Log message: ```Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742```
+Extracted template: ```Unknown base file: /var/lib/nova/instances/_base/<*>```
+Ground truth template: ```Unknown base file: <*>```
+
+Evaluation:
+- Accuracy: The extracted template accurately represents the constant part of the log message up to /var/lib/nova/instances/_base/, and correctly identifies the variable part as <*>. 
+  However, it does not fully align with the ground truth's approach of considering the entire path as variable.  Accuracy score: 4.
+- Robustness: The extracted template specifies a particular path structure (/var/lib/nova/instances/_base/) before introducing the variable component. 
+  This specificity might limit its adaptability across varied log messages that do not follow this exact path structure but still pertain to unknown base files. Robustness score: 3.
+
+Now, evaluate the accuracy and robustness of the extracted template for the following log message given the ground truth template. Explain your reasoning and give a score between 0 and 5 for each evaluation criterion.
+Log message: ```{log_event}```
+Extracted template: ```{extracted_template}```
+Ground truth template: ```{ground_truth}```
